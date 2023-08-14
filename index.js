@@ -68,6 +68,34 @@ let Menyu = [
   ]
 ]
 
+let contacts = [
+  {
+    phone: 998900376809,
+    username: 'JaMeS'
+  }
+]
+
+let Channels = [ 
+  //   [{
+  //     text: "Kanal 1",
+  //     url: "t.me/manguuzbank",
+  //   },
+  //   {
+  //     text: "Kanal 2",
+  //     url: "t.me/+G287NeQYX8UzNjky"
+  //   },
+  // ],
+  [
+    {
+      text: "Kanal 1",
+      url: "t.me/SoffHub"
+    }
+  ],
+  [{
+    text: "Obunani Tekshirish ✅",
+    callback_data: "Check",
+  }],
+  ]
 
 // bot.onText(/\/start/, msg => {
 //   const { id } = msg.chat
@@ -140,6 +168,7 @@ bot.onText(/\/start/, async (msg, [source, match]) => {
 
 
   if (isMember) {
+
     bot.sendMessage(id, "Telefon raqamingizni yuboring" , {
       reply_markup: {
         keyboard: [
@@ -156,27 +185,7 @@ bot.onText(/\/start/, async (msg, [source, match]) => {
     bot.sendMessage(id, hello, {
       parse_mode: "HTML",
       reply_markup: {
-        inline_keyboard: [ 
-        //   [{
-        //     text: "Kanal 1",
-        //     url: "t.me/manguuzbank",
-        //   },
-        //   {
-        //     text: "Kanal 2",
-        //     url: "t.me/+G287NeQYX8UzNjky"
-        //   },
-        // ],
-        [
-          {
-            text: "Kanal 1",
-            url: "t.me/SoffHub"
-          }
-        ],
-        [{
-          text: "Obunani Tekshirish ✅",
-          callback_data: "Check",
-        }],
-        ]
+        inline_keyboard: Channels
       }
     })
   }
@@ -217,6 +226,8 @@ bot.on("callback_query", async query => {
 })
 
 
+
+
 async function checkMembership(userId, ChannelList) {
   try {
     // let arr = []
@@ -248,6 +259,8 @@ bot.on('contact', (msg) => {
 <b>Menyu</b>
   `
 
+
+
   bot.sendMessage(chatId, Text, {
     parse_mode: "HTML",
     reply_markup: {
@@ -263,8 +276,58 @@ bot.on('contact', (msg) => {
 
 
 
-bot.on("message", msg => {
-//   const { id } = msg.chat
+bot.on("message", async msg => {
+  const { id } = msg.chat
+  const text = msg.text;
+
+  let replyText = '';
+
+  let status = await checkMembership(id)
+  if (status) {
+    if (text === 'Musobaqada ishtirok etish') {
+      replyText = `<b>Mangu Orzularingizni sotib oling</b>
+MEGA SARALOVI
+
+BIZ O’YCHAN, XAYOLPARAST, MULOHAZALI AMMO YIRIK MAQSADLARI BILAN DUNYONI O’ZGARTIRISH ISTAGIDAGI KREATIV FIKR EGALARINI TAQDIRLAYMIZ (va hatto jamoaga olamiz)
+
+Eng so’ngi raqamli texnologiyalardan xabardor bo’lishni, bilimingizni oshirish va daromad ishlashni xohlaysizmi?!
+
+Albatta! Shart emas.
+
+ACOIN7 raqamli Platformasi ochilishi munosabati bilan yutuq fondi 70,000,000(!) bo’lgan “TeleA&7 Taqdirlash Tanlovi” ga START beramiz!..
+Ushbu Aksiya faqat jahon va O’zbekistonda sodir bo’layotgan voqea-hodisalar, hayotimizdagi o’zgarish, ilm-fan va texnologik yutuqlarga befarq bo’lmagan shaxslarni taqdirlash uchun tashkil etildi. Taqdirlashning eng oily faollari, internet dunyosidagi biznes struktiralaridan xabardor, blokcheyn va kriptoindustriya sanoatini kelejak deb biluvchi ishtrokchilarimizga esa millionlar tuhfa etamiz!
+TAQDIRLASHDA BIR KISHI FAQAT BIR MARTA ISHTROK ETISHI MUMKIN, JARAYON FEYS ID ORQALI TEKSHIRUVDAN O’TKAZILADI.`;
+
+const imageStream = fs.createReadStream('./coin.jpg');
+bot.sendPhoto(id, imageStream, {
+  parse_mode: "HTML",
+  caption: replyText
+});
+
+    } else if (text === 'Sovg\'alar 🎁') {
+      replyText = 'Sovg\'alar to\'g\'risida qo\'shimcha ma\'lumot.';
+    } else if (text === 'Coin yig\'ish 🪙') {
+      replyText = `Tanloavda ishtirok etib, bir- biridan ajoyib sovgalar yutib olishni istaysizmi?
+Unda tashkil etilgan tanlovda qatnashib, omadingizni sinab koʼring!
+ Shartlar juda oddiy, sovgalarimiz esa juda manfaatli 🥰
+Tanlovda ishtirok etish uchun 👇
+      
+http://t.me/ACOIN7BOT?start=${id}`
+const imageStream = fs.createReadStream('./coin.jpg');
+bot.sendPhoto(id, imageStream, {
+  parse_mode: "HTML",
+  caption: replyText
+});}
+
+ 
+  }else {
+    bot.deleteMessage(id, msg.message_id);
+    bot.sendMessage(id, 'Siz kanallarga obuna bo\'lmagansiz. Iltimos, obuna bo\'ling.', {
+      reply_markup: {
+        inline_keyboard: Channels
+      },
+    });
+  }
 
 //   const markdown = `
 //     *salom ${msg.chat.first_name} 
